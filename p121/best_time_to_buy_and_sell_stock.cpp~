@@ -1,0 +1,51 @@
+#include <vector>
+
+using namespace std;
+
+class Solution {
+private:
+  int highThenLow(vector<int>& prices) {
+    int lo = 0;
+    int hi = prices.size() - 1;
+
+    int buy = prices[lo], sell = prices[hi];
+
+    for (int i = hi; i > lo; i--) {
+      if (prices[i] > sell) {
+	sell = prices[i];
+	hi = i;
+      }
+    }
+    
+    for (; lo < hi; lo++) buy = std::min(buy, prices[lo]);
+
+    return  std::max(sell - buy, 0);
+  }
+
+  int lowThenHigh(vector<int>& prices) {
+    int lo = 0;
+    int hi = prices.size() - 1;
+
+    int buy = prices[lo], sell = prices[hi];
+
+    for (int i = lo; i < hi; i++) {
+      if (prices[i] < buy) {
+	buy = prices[i];
+	lo = i;
+      }
+    }
+    
+    for (; hi > lo; hi--) hi = std::max(sell, prices[hi]);
+
+    return  std::max(sell - buy, 0);
+  }
+
+  
+public:
+  int maxProfit(vector<int>& prices) {
+    return std::max(
+		    highThenLow(prices),
+		    lowThenHigh(prices)
+		    );
+  }
+};
