@@ -1,40 +1,38 @@
-#include <climits>
 #include <cmath>
 #include <vector>
 
 using namespace std;
 
 class Solution {
-private:
-  int findMidpoint(int n, vector<int>& cuts) {
-    std::pair<int, int> m(INT_MAX, -1);
+    private:
+        vector<int> new_cuts;
+        int **_memo;
 
-    for (int cut : cuts) {
-      int cut_prox = std::abs((n / 2) - cut);
-      
-      if (cut_prox < m.first) {
-	m.first = cut_prox;
-	m.second = cut;
-      }
-    }
+        int cost(int left, int right) {
+            if (right - left == 1) return 0;
 
-    return m.second;
-  }
-  
-public:
-    int minCost(int n, vector<int>& cuts) {
-      if (n <= 1 || cuts.empty()) return 0;
+            if (_memo[left][right] != -1) return _memo[left][right];
 
-      int m = findMidpoint(n, cuts);
+            int res = 
 
-      vector<int> before;
-      vector<int> after;
+        }
 
-      for (int cut : cuts) {
-	if (cut < m) before.push_back(cut);
-	if (cut > m) after.push_back(cut - m);
-      }
+    public:
+        int minCost(int n, vector<int>& cuts) {
+            new_cuts.push_back(0);
 
-      return n + minCost(m, before) + minCost(n - m, after);
-    }
+            for (auto x : cuts) new_cuts.push_back(x);
+
+            _memo = new int*[new_cuts.size()];
+
+            for (int i = 0; i < new_cuts.size(); i++) {
+                _memo[i] = new int[new_cuts.size()];
+
+                for (int j = 0; j < new_cuts.size(); j++) _memo[i][j] = -1;
+            }
+
+            new_cuts.push_back(n);
+
+            return _memo[0][n];
+        }
 };
